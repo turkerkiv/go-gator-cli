@@ -51,3 +51,11 @@ func handlerRegister(s *state, cmd command) error {
 	fmt.Println("User created: " + s.config.CurrentUserName)
 	return nil
 }
+
+func handlerReset(s *state, cmd command) error {
+	if err := s.db.TruncateTable(context.Background()); err != nil {
+		return err
+	}
+	fmt.Println("Table data deleted")
+	return nil
+}
