@@ -59,3 +59,19 @@ func handlerReset(s *state, cmd command) error {
 	fmt.Println("Table data deleted")
 	return nil
 }
+
+func handlerListUsers(s *state, cmd command) error {
+	users, err := s.db.ListUsers(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for _, user := range users {
+		currentUsrStr := ""
+		if user.Name == s.config.CurrentUserName {
+			currentUsrStr = "(current)"
+		}
+		fmt.Printf("* %s %s\n", user.Name, currentUsrStr)
+	}
+	return nil
+}
