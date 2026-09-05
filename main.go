@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
+	_ "github.com/lib/pq"
 	"github.com/turkerkiv/gator/internal/config"
+	"github.com/turkerkiv/gator/internal/database"
 )
 
 func main() {
@@ -13,12 +16,20 @@ func main() {
 		fmt.Println(err)
 	}
 
+	db, err2 := sql.Open("postgres", cfg.DbUrl)
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+	dbQueries := database.New(db)
+
 	appState := state{
+		db:     dbQueries,
 		config: &cfg,
 	}
 
 	commands := newCommands()
 	commands.register("login", handlerLogin)
+	commands.register("register", handlerRegister)
 
 	if len(os.Args) < 2 {
 		fmt.Println("there must be at least a command and potentially arguments")
