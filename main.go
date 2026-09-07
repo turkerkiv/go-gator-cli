@@ -35,6 +35,8 @@ func main() {
 	commands.register("agg", handlerAgg)
 	commands.register("addfeed", handlerAddFeed)
 	commands.register("feeds", handlerListFeeds)
+	commands.register("follow", handlerFollow)
+	commands.register("following", handlerFollowing)
 
 	if len(os.Args) < 2 {
 		fmt.Println("there must be at least a command and potentially arguments")

@@ -13,3 +13,7 @@ INSERT INTO feeds (
 
 -- name: ListFeeds :many
 SELECT * FROM feeds;
+
+-- name: GetFeed :one
+SELECT * FROM feeds 
+WHERE url = $1;

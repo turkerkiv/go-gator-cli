@@ -111,6 +111,11 @@ func handlerAddFeed(s *state, cmd command) error {
 		return err
 	}
 
+	cmd.args = cmd.args[1:]
+	if err := handlerFollow(s, cmd); err != nil {
+		return err
+	}
+
 	fmt.Println(feed)
 	return nil
 }
@@ -128,6 +133,50 @@ func handlerListFeeds(s *state, cmd command) error {
 		}
 
 		fmt.Printf("* %s - %s - %s\n", feed.Name, feed.Url, usr.Name)
+	}
+	return nil
+}
+
+func handlerFollow(s *state, cmd command) error {
+	if len(cmd.args) < 1 {
+		return errors.New("follow expects a 1 arguments, the url.")
+	}
+	url := cmd.args[0]
+
+	usr, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	feed, err := s.db.GetFeed(context.Background(), url)
+	if err != nil {
+		return err
+	}
+
+	params := database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		UserID:    usr.ID,
+		FeedID:    feed.ID,
+	}
+
+	follows, err := s.db.CreateFeedFollow(context.Background(), params)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%s - %s\n", follows.FeedName, follows.UserName)
+	return nil
+}
+
+func handlerFollowing(s *state, cmd command) error {
+	follows, err := s.db.GetFeedFollowsForUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	for _, val := range follows {
+		fmt.Printf("%s %s\n", val.UserName, val.FeedName)
 	}
 	return nil
 }
