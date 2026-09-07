@@ -114,3 +114,20 @@ func handlerAddFeed(s *state, cmd command) error {
 	fmt.Println(feed)
 	return nil
 }
+
+func handlerListFeeds(s *state, cmd command) error {
+	feeds, err := s.db.ListFeeds(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for _, feed := range feeds {
+		usr, err := s.db.GetUserById(context.Background(), feed.UserID)
+		if err != nil {
+			return nil
+		}
+
+		fmt.Printf("* %s - %s - %s\n", feed.Name, feed.Url, usr.Name)
+	}
+	return nil
+}
