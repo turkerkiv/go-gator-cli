@@ -32,6 +32,8 @@ func main() {
 	commands.register("register", handlerRegister)
 	commands.register("reset", handlerReset)
 	commands.register("users", handlerListUsers)
+	commands.register("agg", handlerAgg)
+	commands.register("addFeed", handlerAddFeed)
 
 	if len(os.Args) < 2 {
 		fmt.Println("there must be at least a command and potentially arguments")
