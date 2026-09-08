@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/turkerkiv/gator/internal/config"
-	"github.com/turkerkiv/gator/internal/database"
+	"github.com/turkerkiv/go-gator-cli/internal/config"
+	"github.com/turkerkiv/go-gator-cli/internal/database"
 )
 
 type state struct {

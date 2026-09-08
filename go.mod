@@ -1,4 +1,4 @@
-module github.com/turkerkiv/gator
+module github.com/turkerkiv/go-gator-cli
 
 go 1.27.1
 

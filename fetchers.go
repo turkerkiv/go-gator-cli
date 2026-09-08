@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/turkerkiv/gator/internal/database"
+	"github.com/turkerkiv/go-gator-cli/internal/database"
 )
 
 type RSSFeed struct {

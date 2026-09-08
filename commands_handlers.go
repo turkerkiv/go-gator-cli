@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/turkerkiv/gator/internal/database"
+	"github.com/turkerkiv/go-gator-cli/internal/database"
 )
 
 func handlerLogin(s *state, cmd command) error {

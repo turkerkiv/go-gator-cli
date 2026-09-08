@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/turkerkiv/gator/internal/database"
+	"github.com/turkerkiv/go-gator-cli/internal/database"
 )
 
 func middlewareLoggedIn(handler func(s *state, cmd command, user database.User) error) func(*state, command) error {
