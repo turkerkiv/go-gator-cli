@@ -38,6 +38,7 @@ func main() {
 	commands.register("follow", middlewareLoggedIn(handlerFollow))
 	commands.register("following", middlewareLoggedIn(handlerFollowing))
 	commands.register("unfollow", middlewareLoggedIn(handlerUnfollow))
+	commands.register("browse", middlewareLoggedIn(handlerBrowse))
 
 	if len(os.Args) < 2 {
 		fmt.Println("there must be at least a command and potentially arguments")
@@ -52,14 +53,4 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
-	// cfg.SetUser("turker")
-
-	// cfg, err = config.Read()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// fmt.Println(cfg.CurrentUserName, cfg.DbUrl)
-
 }

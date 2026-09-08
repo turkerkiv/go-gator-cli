@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/turkerkiv/gator/internal/database"
 )
 
@@ -89,7 +90,43 @@ func scrapeFeeds(s *state) error {
 	}
 
 	for _, val := range feed.Channel.Item {
-		fmt.Println(val.Title)
+		if val.Link == "" {
+			continue
+		}
+
+		t, err := time.Parse(time.RFC1123, val.PubDate)
+		timeParam := sql.NullTime{}
+		if err == nil {
+			timeParam = sql.NullTime{
+				Time:  t,
+				Valid: true,
+			}
+		}
+
+		descParam := sql.NullString{}
+		if val.Description != "" {
+			descParam = sql.NullString{
+				String: val.Description,
+				Valid:  true,
+			}
+		}
+
+		params := database.CreatePostParams{
+			ID:          uuid.New(),
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+			FeedID:      feedToNext.ID,
+			Title:       val.Title,
+			Url:         val.Link,
+			Description: descParam,
+			PublishedAt: timeParam,
+		}
+
+		_, err = s.db.CreatePost(context.Background(), params)
+		if err != nil {
+			continue
+		}
+		fmt.Printf("collected - url: %s - feed: %s\n", feedToNext.Url, val.Title)
 	}
 
 	return nil
