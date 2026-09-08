@@ -87,6 +87,7 @@ func handlerAgg(s *state, cmd command) error {
 	}
 
 	ticker := time.NewTicker(duration)
+	fmt.Printf("Collecting feeds every %s\n", duration)
 	for ; ; <-ticker.C {
 		scrapeFeeds(s)
 	}
