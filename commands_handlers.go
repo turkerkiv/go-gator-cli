@@ -77,13 +77,19 @@ func handlerListUsers(s *state, cmd command) error {
 }
 
 func handlerAgg(s *state, cmd command) error {
-	feed, err := fetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
+	if len(cmd.args) < 1 {
+		return errors.New("agg command needs at least 1 argument, the time_between_requests as like 1s, 1m, 1h")
+	}
+
+	duration, err := time.ParseDuration(cmd.args[0])
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(feed)
-	return nil
+	ticker := time.NewTicker(duration)
+	for ; ; <-ticker.C {
+		scrapeFeeds(s)
+	}
 }
 
 func handlerAddFeed(s *state, cmd command, usr database.User) error {
